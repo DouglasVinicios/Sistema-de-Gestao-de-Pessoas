@@ -68,5 +68,9 @@ public class Empresa {
 	public void setSituacao(boolean situacao) {
 		this.situacao = situacao;
 	}
-	
+	@Override
+	public String toString() {
+		return "Empresa [id=" + id + ", nome=" + nome + ", nomeAbreviado=" + nomeAbreviado + ", email=" + email
+				+ ", indicadorEmpresaPrincipal=" + indicadorEmpresaPrincipal + ", situacao=" + situacao + "]";
+	}
 }

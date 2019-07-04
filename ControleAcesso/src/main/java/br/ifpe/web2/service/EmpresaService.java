@@ -15,39 +15,47 @@ import br.ifpe.web2.model.Empresa;
 public class EmpresaService {
 	@Autowired
 	private EmpresaDAO empresaRep;
-	
+
 	public List<Empresa> listarEmpresas() {
 		return this.empresaRep.findAll(Sort.by("nome"));
 	}
-	
+
 	public Optional<Empresa> findById(Integer id) {
 		return this.empresaRep.findById(id);
 	}
-	
-	public Optional<Empresa> findByNome(String nomeEmpresa) {
-		return this.empresaRep.findByNome(nomeEmpresa);
+
+	public Empresa findByNomeOrNomeAbreviado(String nomeEmpresa) {
+		return this.empresaRep.findByNomeOrNomeAbreviado(nomeEmpresa).get(0);
 	}
-	
+
 	public void inserirEmpresa(Empresa empresa) throws Exception {
-		if(this.empresaRep.findByNome(empresa.getNome()).isPresent()) {
+		Optional<Empresa> empresaOptional = Optional.ofNullable(this.empresaRep.findByNome(empresa.getNome()));
+		if (empresaOptional.isPresent()) {
 			throw new Exception("Já existe empresa com o nome informado");
 		}
 		for (Empresa e : this.empresaRep.findByIndicadorEmpresaPrincipal(empresa.isIndicadorEmpresaPrincipal())) {
-			if(e.isIndicadorEmpresaPrincipal()) {
+			if (e.isIndicadorEmpresaPrincipal()) {
 				throw new Exception("Já existe empresa principal");
 			}
 		}
 		this.empresaRep.save(empresa);
 	}
-	
+
 	public List<Empresa> filtrarEmpresaPeloNome(String nomeEmpresa) throws OneEmpresaExistException, Exception {
-		if(!nomeEmpresa.trim().isEmpty()) {
-			List<Empresa> empresas = Optional.ofNullable(this.empresaRep.findByNomeOrNomeAbreviado(nomeEmpresa)).orElseThrow(Exception::new);
-			if(empresas.size() == 1) {
-				throw new OneEmpresaExistException();
+		if (!nomeEmpresa.trim().isEmpty()) {
+			Optional<List<Empresa>> empresas = Optional
+					.ofNullable(this.empresaRep.findByNomeOrNomeAbreviado(nomeEmpresa));
+			if (empresas.isPresent()) {
+
+				if (empresas.get().size() == 1) {
+					throw new OneEmpresaExistException();
+				}
+				if (empresas.get().size() == 0) {
+					throw new Exception();
+				}
+				return empresas.get();
 			}
-			return empresas;
 		}
-		return this.listarEmpresas();
+		return listarEmpresas();
 	}
 }

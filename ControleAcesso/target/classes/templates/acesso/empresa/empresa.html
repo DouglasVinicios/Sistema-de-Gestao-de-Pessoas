@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<div th:replace="header :: headerBlock"></div>
+<head>
+<meta charset="UTF-8">
+<title>Manter Empresas</title>
+</head>
+<body>
+	<div th:insert="header :: navBar"></div>
+	<div class="container">
+		
+		<form class="form-inline" th:action="@{/empresa/filtrar}" method="get">
+			<a th:href="@{/empresa/inserir}" type="button" class="btn btn-warning">Inserir Empresa</a>
+		  	<div class="form-group mx-sm-3 mb-2">
+		    	<label for="inputPassword2" class="sr-only">filtrar empresa</label>
+		    	<input type="text" name="nomeEmpresa" class="form-control" id="filtraEmpresa" placeholder="Digite nome da empresa">
+		  	</div>
+		  	<button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+		</form>
+		<table class="table">
+			<thead class="thead-dark">
+				<tr>
+					<th class="bg-success" scope="col">Nome</th>
+					<th class="bg-success" scope="col">Nome Abreviado</th>
+					<th class="bg-success" scope="col">Email</th>
+					<th class="bg-success" scope="col">Empresa Principal</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${error}">
+					<td th:text="${error}"></td>
+				</tr>
+				<tr th:each="empresa : ${listaEmpresas}">
+					<th th:text="${empresa.nome}"></th>
+					<td th:text="${empresa.nomeAbreviado}"></td>
+					<td th:text="${empresa.email}"></td>
+					<td th:text="${empresa.indicadorEmpresaPrincipal}? ativo : inativo"></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+</body>
+</html>

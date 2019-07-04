@@ -1,5 +1,7 @@
 package br.ifpe.web2.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ public class EmpresaController {
 	public ModelAndView inserirEmpresa() {
 		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
 		mv.addObject("empresa", new Empresa());
+		mv.addObject("action", "inserir");
 		return mv;
 	}
 	
@@ -57,12 +60,13 @@ public class EmpresaController {
 	public ModelAndView filtrarEmpresa(@RequestParam(required = false) String nomeEmpresa) {
 		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa");
 		try {
-			mv.addObject("listaEmpresas", this.empresaService.filtrarEmpresaPeloNome(nomeEmpresa));
+			List<Empresa> listaEmpresas = this.empresaService.filtrarEmpresaPeloNome(nomeEmpresa);
+			mv.addObject("listaEmpresas", listaEmpresas);
 		} catch(OneEmpresaExistException e) {
-			System.out.println(this.empresaService.findByNome(nomeEmpresa));
-			//this.atualizarEmpresa(this.empresaService.findByNome(nomeEmpresa).get().getId());
+			Integer idEmpresa = this.empresaService.findByNomeOrNomeAbreviado(nomeEmpresa).getId();
+			String url = "redirect:/empresa/atualizar/"+idEmpresa;
+			mv.setViewName(url);
 		} catch(Exception e) {
-			mv.setViewName("/acesso/empresa/empresa-form");
 			mv.addObject("error", "Nenhum resultado encontrado");
 		}
 		return mv;
@@ -72,6 +76,7 @@ public class EmpresaController {
 	public ModelAndView atualizarEmpresa(@PathVariable Integer id) {
 		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
 		mv.addObject("empresa", this.empresaService.findById(id));
+		mv.addObject("action", "atualizar/"+id);
 		return mv;
 	}
 	
@@ -79,6 +84,7 @@ public class EmpresaController {
 	public ModelAndView atualizarEmpresa(@Valid Empresa empresa, BindingResult br) {
 		if(br.hasErrors()) {
 			ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
+			mv.addObject("action", "atualizar/"+empresa.getId());
 			return mv;
 		}
 		try {
@@ -88,6 +94,7 @@ public class EmpresaController {
 			ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
 			mv.addObject("error", e.getMessage());
 			mv.addObject("empresa", empresa);
+			mv.addObject("action", "atualizar/"+empresa.getId());
 			return mv;
 		}
 	}
