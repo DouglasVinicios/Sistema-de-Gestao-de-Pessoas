@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Colegiada - Cadastro de Usuários</title>
+
+</head>
+<body>
+	<div th:insert="header"></div>
+	<div class="container">
+		<h2>Usuários</h2>
+		<h5>Editar um usuário:</h5>
+		<form class="form-narrow form-horizontal" method="post"
+			th:action="@{/usuarios/saveList}" th:object="${usuario}">
+			<input type="hidden" id="id" th:field="*{id}" />
+			<table class="table table-striped">
+				<tr>
+					<td><input type="text" id="nome" placeholder="Nome"
+						th:field="*{nome}" size="40" /></td>
+					<td><input type="text" id="email" placeholder="E-mail"
+						readonly="readonly" th:field="*{email}" /></td>
+					<td><select id="permissao" th:field="*{permissao}">
+							<option th:each="perm : ${listaPermissoes}"
+								th:text="${perm.texto}" th:value="${perm.toString()}"></option>
+					</select></td>
+
+					<td><button type="submit" class="btn btn-primary"
+							name="action" value="salvar">Salvar</button>&nbsp;&nbsp;</td>
+				</tr>
+			</table>
+			<div class="alert alert-success" th:if="${mensagem}"
+				th:text="${mensagem}"></div>
+			<div class="alert alert-danger" th:if="${mensagemErro}"
+				th:text="${mensagemErro}"></div>
+		</form>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>E-mail</th>
+					<th>Perfil</th>
+					<th>Ativo</th>
+					<th>Editar</th>
+					<th>Ativar/Desativar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="usuario : ${lista}">
+					<td th:text="${usuario.nome}"></td>
+					<td th:text="${usuario.email}"></td>
+					<td th:text="${usuario.permissao}"></td>
+					<td><span th:if="${usuario.ativo}">Ativo</span> <span
+						th:if="!${usuario.ativo}">Inativo</span></td>
+					<td><a class="btn btn-warning"
+						th:href="@{/usuarios/edit/{id}(id=${usuario.id})}">Editar</a></td>
+					<td><a class="btn btn-danger" th:if="${usuario.ativo}"
+						th:href="@{/usuarios/desativar/{id}(id=${usuario.id})}">Desativar</a>
+						<a class="btn btn-info" th:if="!${usuario.ativo}"
+						th:href="@{/usuarios/ativar/{id}(id=${usuario.id})}">Ativar</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<hr></hr>
+		<h6>
+			<a th:href="@{/}">Home</a>
+		</h6>
+	</div>
+</body>
+</html>
