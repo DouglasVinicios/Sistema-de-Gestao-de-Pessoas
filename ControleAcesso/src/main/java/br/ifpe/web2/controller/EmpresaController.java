@@ -43,6 +43,7 @@ public class EmpresaController {
 	public ModelAndView inserirEmpresa(@Valid Empresa empresa, BindingResult br) {
 		if(br.hasErrors()) {
 			ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
+			mv.addObject("action", "inserir");
 			return mv;
 		}
 		try {
@@ -52,6 +53,7 @@ public class EmpresaController {
 			ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
 			mv.addObject("error", e.getMessage());
 			mv.addObject("empresa", empresa);
+			mv.addObject("action", "inserir");
 			return mv;
 		}
 	}

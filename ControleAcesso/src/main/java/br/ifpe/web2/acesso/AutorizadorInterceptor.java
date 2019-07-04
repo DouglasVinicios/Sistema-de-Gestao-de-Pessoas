@@ -19,8 +19,8 @@ public class AutorizadorInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		System.out.println(" >>> INFO:: Interceptor antes da chamada <<< ");
-
-		if (!CONTROLAR_ACESSO) {
+		// add ! dps
+		if (CONTROLAR_ACESSO) {
 			return true;
 		}
 		
