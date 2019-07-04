@@ -58,4 +58,8 @@ public class EmpresaService {
 		}
 		return listarEmpresas();
 	}
+	
+	public void deletarEmpresa(Empresa empresa) {
+		this.empresaRep.delete(empresa);
+	}
 }

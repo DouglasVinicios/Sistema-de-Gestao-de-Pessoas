@@ -1,12 +1,14 @@
 package br.ifpe.web2.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,14 +25,14 @@ import br.ifpe.web2.service.EmpresaService;
 public class EmpresaController {
 	@Autowired
 	private EmpresaService empresaService;
-	
+
 	@GetMapping
 	public ModelAndView listarEmpresas() {
 		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-list");
 		mv.addObject("listaEmpresas", this.empresaService.listarEmpresas());
 		return mv;
 	}
-	
+
 	@GetMapping("/inserir")
 	public ModelAndView inserirEmpresa() {
 		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
@@ -38,10 +40,10 @@ public class EmpresaController {
 		mv.addObject("action", "inserir");
 		return mv;
 	}
-	
+
 	@PostMapping("/inserir")
 	public ModelAndView inserirEmpresa(@Valid Empresa empresa, BindingResult br) {
-		if(br.hasErrors()) {
+		if (br.hasErrors()) {
 			ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
 			mv.addObject("action", "inserir");
 			return mv;
@@ -49,7 +51,7 @@ public class EmpresaController {
 		try {
 			this.empresaService.inserirEmpresa(empresa);
 			return new ModelAndView("redirect:/empresa");
-		}catch(Exception e) {
+		} catch (Exception e) {
 			ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
 			mv.addObject("error", e.getMessage());
 			mv.addObject("empresa", empresa);
@@ -57,50 +59,59 @@ public class EmpresaController {
 			return mv;
 		}
 	}
-	
+
 	@GetMapping("/filtrar")
 	public ModelAndView filtrarEmpresa(@RequestParam(required = false) String nomeEmpresa) {
 		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-list");
 		try {
 			List<Empresa> listaEmpresas = this.empresaService.filtrarEmpresaPeloNome(nomeEmpresa);
 			mv.addObject("listaEmpresas", listaEmpresas);
-		} catch(OneEmpresaExistException e) {
+		} catch (OneEmpresaExistException e) {
 			Integer idEmpresa = this.empresaService.findByNomeOrNomeAbreviado(nomeEmpresa).getId();
-			String url = "redirect:/empresa/atualizar/"+idEmpresa;
+			String url = "redirect:/empresa/atualizar/" + idEmpresa;
 			mv.setViewName(url);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			mv.addObject("error", "Nenhum resultado encontrado");
 		}
 		return mv;
 	}
-	
+
 	@GetMapping("/atualizar/{id}")
 	public ModelAndView atualizarEmpresa(@PathVariable Integer id) {
 		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
 		mv.addObject("empresa", this.empresaService.findById(id));
-		mv.addObject("action", "atualizar/"+id);
+		mv.addObject("action", "atualizar/" + id);
 		return mv;
 	}
-	
+
 	@PostMapping("/atualizar/{id}")
 	public ModelAndView atualizarEmpresa(@Valid Empresa empresa, BindingResult br) {
-		if(br.hasErrors()) {
+		if (br.hasErrors()) {
 			ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
-			mv.addObject("action", "atualizar/"+empresa.getId());
+			mv.addObject("action", "atualizar/" + empresa.getId());
 			return mv;
 		}
 		try {
 			this.empresaService.inserirEmpresa(empresa);
 			return new ModelAndView("redirect:/empresa");
-		}catch(Exception e) {
+		} catch (Exception e) {
 			ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-form");
 			mv.addObject("error", e.getMessage());
 			mv.addObject("empresa", empresa);
-			mv.addObject("action", "atualizar/"+empresa.getId());
+			mv.addObject("action", "atualizar/" + empresa.getId());
 			return mv;
 		}
 	}
-	
-	
-	
+
+	@DeleteMapping("/empresa")
+	public ModelAndView deletaEmpresa(@PathVariable Integer[] idSelecionados) {
+		for (Integer id : idSelecionados) {
+			Optional<Empresa> empresaParaDeletar = this.empresaService.findById(id);
+			if (empresaParaDeletar.isPresent()) {
+				this.empresaService.deletarEmpresa(empresaParaDeletar.get());
+			}
+		}
+		return new ModelAndView("/acesso/empresa/empresa-lista");
+	}
+
 }
