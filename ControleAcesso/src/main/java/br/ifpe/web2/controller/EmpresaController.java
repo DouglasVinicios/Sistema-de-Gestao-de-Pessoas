@@ -26,7 +26,7 @@ public class EmpresaController {
 	
 	@GetMapping
 	public ModelAndView listarEmpresas() {
-		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa");
+		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-list");
 		mv.addObject("listaEmpresas", this.empresaService.listarEmpresas());
 		return mv;
 	}
@@ -58,7 +58,7 @@ public class EmpresaController {
 	
 	@GetMapping("/filtrar")
 	public ModelAndView filtrarEmpresa(@RequestParam(required = false) String nomeEmpresa) {
-		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa");
+		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-list");
 		try {
 			List<Empresa> listaEmpresas = this.empresaService.filtrarEmpresaPeloNome(nomeEmpresa);
 			mv.addObject("listaEmpresas", listaEmpresas);
