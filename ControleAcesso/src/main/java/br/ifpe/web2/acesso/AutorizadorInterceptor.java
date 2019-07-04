@@ -20,7 +20,7 @@ public class AutorizadorInterceptor implements HandlerInterceptor {
 			throws Exception {
 		System.out.println(" >>> INFO:: Interceptor antes da chamada <<< ");
 		// add ! dps
-		if (CONTROLAR_ACESSO) {
+		if (!CONTROLAR_ACESSO) {
 			return true;
 		}
 		
