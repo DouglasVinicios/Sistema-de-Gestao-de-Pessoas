@@ -4,10 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
@@ -16,30 +14,32 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 @Entity
 public class Funcionario {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NotNull
+	@NotNull(message = "Informe a Matrícula.")
 	@Size(max = 8)
 	@Column(length = 70, nullable = false)
 	private Integer matricula;
-	@NotBlank
+	@NotBlank(message = "Informe o Nome.")
 	@Size(max = 70)
 	@Column(length = 70, nullable = false, unique = true)
 	private String nome;
-	@NotBlank
+	@CPF(message = "Informe CPF.")
 	@Size(max = 11)
 	@Column(length = 11, nullable = false)
 	private String cpf;
+	@NotNull(message = "Data de Nascimento informada inválida.")
 	@Temporal(TemporalType.DATE)
-	@PastOrPresent
+	@PastOrPresent(message = "Data de nascimento informada inválida.")
 	private Date dataNascimento;
-	@NotEmpty
-	@OneToOne
+	@NotEmpty(message = "Entidade Cargo sem dados para seleção.")
+	@ManyToOne
 	private Cargo cargo;
-	@NotEmpty
-	@OneToOne
+	@NotEmpty(message = "Entidade Empresa sem dados para seleção.")
+	@ManyToOne
 	private Empresa empresa;
 
 	public Integer getMatricula() {
