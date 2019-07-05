@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.ifpe.web2.exception.OneEmpresaExistException;
@@ -105,16 +105,18 @@ public class EmpresaController {
 			return mv;
 		}
 	}
-
-	@DeleteMapping("/empresa")
-	public ModelAndView deletarEmpresa(@RequestParam int[] ids) {
+	
+	/* fazer mudanças para melhorar esses métodos dps */
+	@DeleteMapping
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deletarEmpresa(@RequestBody int[] ids) {
+		System.out.println(ids.toString());
 		for (Integer id : ids) {
 			Optional<Empresa> empresaParaDeletar = this.empresaService.findById(id);
 			if (empresaParaDeletar.isPresent()) {
 				this.empresaService.deletarEmpresa(empresaParaDeletar.get());
 			}
 		}
-		return new ModelAndView("/acesso/empresa/empresa-lista");
 	}
 
 }

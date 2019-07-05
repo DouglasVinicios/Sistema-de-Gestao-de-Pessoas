@@ -48,37 +48,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<script type="text/javascript">
-			$("#btn-delete").hide();
-			let idSelecionados = [];
-			$(".table form input[name='check-remove[]']").click(function() {
-				$(this).each(function() {
-					let id = parseInt($(this).val());
-					let indiceNoArray = idSelecionados.indexOf(id);
-					if (indiceNoArray !== -1) {
-						idSelecionados.splice(indiceNoArray, 1);
-					} else {
-						idSelecionados.push(id);
-					}
-					if (idSelecionados.length > 0) {
-						$("#btn-delete").fadeIn('slow');
-					} else {
-						$("#btn-delete").fadeOut('slow');
-					}
-
-				});
-				console.log(idSelecionados);
-				return idSelecionados;
-			});
-			$("#btn-delete").click(function() {
-				$.ajax({
-					method : "DELETE",
-					url : "/empresa",
-					data : idSelecionados
-				});
-				
-			});
-		</script>
+		<script th:src="@{/js/jquery-form.js}" type="text/javascript"></script>
 	</div>
 </body>
 </html>
