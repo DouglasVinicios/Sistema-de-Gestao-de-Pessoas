@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.ifpe.web2.acesso.excecoes.EmailExistsException;
+import br.ifpe.web2.util.CriptografiaHash;
 import br.ifpe.web2.util.ServiceException;
 
 @Service
@@ -16,6 +17,8 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioDAO usuarioDAO;
+	@Autowired
+	private CriptografiaHash ch;
 	
 	public Usuario efetuarLogin(String email, String senha) throws ServiceException {
 		Usuario usuario = this.usuarioDAO.efetuarLogin(email, senha);
@@ -52,7 +55,7 @@ public class UsuarioService {
 	        throw new EmailExistsException
 	          ("Já existe usuário com este e-mail: " + usuario.getEmail());
 	    }
-//	    usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+	    usuario.setSenha(this.ch.passwordEncoder(usuario.getSenha()));
 	 
 		usuarioDAO.save(usuario);
 	}
