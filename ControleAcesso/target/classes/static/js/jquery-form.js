@@ -20,11 +20,11 @@ $(".table form input[name='check-remove[]']").click(function() {
 	return idSelecionados;
 });
 $("#btn-delete").click(function() {
-	ids = JSON.stringify(idSelecionados);
-
+	let ids = JSON.stringify(idSelecionados);
+	let urlPath = window.location.pathname;
 	$.ajax({
 		method : "DELETE",
-		url : "/empresa",
+		url : urlPath,
 		data : ids,
 		contentType : 'application/json; charset=utf-8',
 		dataType : 'json'

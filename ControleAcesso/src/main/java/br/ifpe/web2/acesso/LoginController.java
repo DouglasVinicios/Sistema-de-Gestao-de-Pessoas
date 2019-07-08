@@ -1,5 +1,8 @@
 package br.ifpe.web2.acesso;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +36,10 @@ public class LoginController {
 		} catch (ServiceException e) {
 			ra.addFlashAttribute("mensagemErro", e.getMessage());
 			return "redirect:/";
-		} 
+		} catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			ra.addFlashAttribute("mensagemErro", "Falha ao logar");
+			return "redirect:/";
+		}
 		return "redirect:/home";
 	}
 	

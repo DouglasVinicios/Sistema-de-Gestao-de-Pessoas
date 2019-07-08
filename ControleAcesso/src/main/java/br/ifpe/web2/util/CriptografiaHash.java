@@ -4,11 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CriptografiaHash {
 
-	@Bean
 	public String passwordEncoder(String senhaParaCriptografar)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException {
 

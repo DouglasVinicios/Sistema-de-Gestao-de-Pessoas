@@ -64,7 +64,7 @@ public class CargoController {
 	}
 	
 	@GetMapping("/filtrar")
-	public ModelAndView filtrarEmpresa(@RequestParam(required = false) String nomeCargo) {
+	public ModelAndView filtrarCargo(@RequestParam(required = false) String nomeCargo) {
 		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-list");
 		try {
 			List<Cargo> listaCargos = this.cargoService.filtrarCargoPeloNome(nomeCargo);
@@ -80,7 +80,7 @@ public class CargoController {
 	}
 
 	@GetMapping("/atualizar/{id}")
-	public ModelAndView atualizarEmpresa(@PathVariable Integer id) {
+	public ModelAndView atualizarCargo(@PathVariable Integer id) {
 		ModelAndView mv = new ModelAndView("/acesso/cargo/cargo-form");
 		mv.addObject("empresa", this.cargoService.findById(id));
 		mv.addObject("action", "atualizar/" + id);
@@ -88,7 +88,7 @@ public class CargoController {
 	}
 
 	@PostMapping("/atualizar/{id}")
-	public ModelAndView atualizarEmpresa(@Valid Cargo cargo, BindingResult br) {
+	public ModelAndView atualizarCargo(@Valid Cargo cargo, BindingResult br) {
 		if (br.hasErrors()) {
 			ModelAndView mv = new ModelAndView("/acesso/cargo/cargo-form");
 			mv.addObject("action", "atualizar/" + cargo.getId());
@@ -109,7 +109,7 @@ public class CargoController {
 	/* fazer mudanças para melhorar esses métodos dps */
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deletarEmpresa(@RequestBody int[] ids) {
+	public void deletarCargo(@RequestBody int[] ids) {
 		for (Integer id : ids) {
 			Optional<Cargo> cargoParaDeletar = this.cargoService.findById(id);
 			if (cargoParaDeletar.isPresent()) {

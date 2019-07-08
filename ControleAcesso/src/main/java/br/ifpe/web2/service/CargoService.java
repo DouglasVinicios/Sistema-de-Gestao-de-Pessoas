@@ -30,9 +30,9 @@ public class CargoService {
 	}
 
 	public void inserirCargo(Cargo cargo) throws Exception {
-		Optional<Cargo> cargoOptional = Optional.ofNullable(this.cargoRep.findByDescricao(cargo.getNome()));
+		Optional<Cargo> cargoOptional = Optional.ofNullable(this.cargoRep.findByDescricao(cargo.getDescricao()));
 		if (cargoOptional.isPresent()) {
-			throw new Exception("Já existe empresa com essa descrição informado");
+			throw new Exception("Já existe cargo com essa descrição informada");
 		}
 		this.cargoRep.save(cargo);
 	}

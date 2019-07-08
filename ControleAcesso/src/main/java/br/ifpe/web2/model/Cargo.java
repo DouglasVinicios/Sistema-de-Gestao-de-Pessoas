@@ -24,8 +24,8 @@ public class Cargo {
 	@Column(length = 15)
 	private String descricaoAbreviada;
 	@NotNull
-	@Column(nullable = false, columnDefinition = "bit(1) default 1")
-	private boolean situacao;
+	@Column(nullable = false, columnDefinition = "tinyint(1) default 1")
+	private boolean situacao = true;
 
 	public Integer getId() {
 		return id;

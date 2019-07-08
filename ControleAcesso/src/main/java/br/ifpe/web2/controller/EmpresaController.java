@@ -110,7 +110,6 @@ public class EmpresaController {
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deletarEmpresa(@RequestBody int[] ids) {
-		System.out.println(ids.toString());
 		for (Integer id : ids) {
 			Optional<Empresa> empresaParaDeletar = this.empresaService.findById(id);
 			if (empresaParaDeletar.isPresent()) {

@@ -1,5 +1,7 @@
 package br.ifpe.web2.acesso;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,8 @@ public class UsuarioService {
 	@Autowired
 	private CriptografiaHash ch;
 	
-	public Usuario efetuarLogin(String email, String senha) throws ServiceException {
-		Usuario usuario = this.usuarioDAO.efetuarLogin(email, senha);
+	public Usuario efetuarLogin(String email, String senha) throws ServiceException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		Usuario usuario = this.usuarioDAO.efetuarLogin(email, this.senhaCriptografada(senha));
 		if (usuario == null) {
 			throw new ServiceException("Login/senha não encontrados");
 		}
@@ -55,7 +57,7 @@ public class UsuarioService {
 	        throw new EmailExistsException
 	          ("Já existe usuário com este e-mail: " + usuario.getEmail());
 	    }
-	    usuario.setSenha(this.ch.passwordEncoder(usuario.getSenha()));
+	    usuario.setSenha(this.senhaCriptografada(usuario.getSenha()));
 	 
 		usuarioDAO.save(usuario);
 	}
@@ -68,4 +70,7 @@ public class UsuarioService {
 		return usuarioDAO.findByNomeEmailAprox(nome, email);
 	}
 	
+	public String senhaCriptografada(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		return this.ch.passwordEncoder(senha);
+	}
 }
