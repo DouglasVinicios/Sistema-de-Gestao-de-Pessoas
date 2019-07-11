@@ -8,6 +8,6 @@ import br.ifpe.web2.model.Funcionario;
 @Repository
 public interface FuncionarioDAO extends JpaRepository<Funcionario, Integer> {
 
-	Funcionario findByCpfAndMatricula(String cpf, Integer matricula);
+	Funcionario findByCpfAndMatricula(String cpf, String matricula);
 	
 }

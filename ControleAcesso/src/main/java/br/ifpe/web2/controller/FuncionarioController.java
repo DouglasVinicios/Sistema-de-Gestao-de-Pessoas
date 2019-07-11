@@ -46,13 +46,13 @@ public class FuncionarioController {
 	}
 
 	@PostMapping("/inserir")
-	public String inserirFuncionario(@Valid Funcionario funcionario, BindingResult br, RedirectAttributes ra,
+	public ModelAndView inserirFuncionario(@Valid Funcionario funcionario, BindingResult br, RedirectAttributes ra,
 			@RequestParam(name = "foto") MultipartFile foto) {
 		
-		ra.addFlashAttribute("action", "inserir");
 		if (br.hasErrors()) {
-			ra.addFlashAttribute("errors", br.getAllErrors());
-			return "/acesso/funcionario/funcionario-form";
+			ModelAndView mv = new ModelAndView("/acesso/funcionario/funcionario-form");
+			mv.addObject("action", "inserir");
+			return mv;
 		}
 		try {
 			funcionario.setFoto(foto.getBytes());
@@ -61,7 +61,7 @@ public class FuncionarioController {
 		} catch (Exception e) {
 			ra.addFlashAttribute("errors", e.getMessage());
 		}
-		return "/acesso/funcionario/funcionario-form";
+		return new ModelAndView("redirect:/funcionario/inserir");
 	}
 
 }

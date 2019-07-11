@@ -11,7 +11,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,10 +24,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Funcionario {
 	@Id
 	@NotNull(message = "Informe a Matrícula.")
-	@Min(value = 8, message = "Matrícula deve ter 8 digitos")
-	@Max(value = 8, message = "Matrícula deve ter 8 digitos")
+	@Size(max = 8, min = 8, message = "Matrícula deve ter 8 digitos")
 	@Column(length = 8, nullable = false)
-	private Integer matricula;
+	private String matricula;
 	@NotBlank(message = "Informe o Nome.")
 	@Size(max = 70)
 	@Column(length = 70, nullable = false, unique = true)
@@ -63,11 +61,11 @@ public class Funcionario {
 	@Lob
 	private byte[] foto;
 
-	public Integer getMatricula() {
+	public String getMatricula() {
 		return matricula;
 	}
 
-	public void setMatricula(Integer matricula) {
+	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
 
