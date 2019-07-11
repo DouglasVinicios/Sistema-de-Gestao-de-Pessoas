@@ -2,8 +2,6 @@ package br.ifpe.web2.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,11 +21,6 @@ public class Endereco {
 	@NotBlank(message = "Informe a cidade")
 	@Column(length = 40)
 	private String cidade;
-	@NotBlank(message = "Informe o estado")
-	@Size(max = 2)
-	@Column(length = 2, columnDefinition = "char(2)")
-	@Enumerated(EnumType.STRING)
-	private Estado estado;
 	@NotNull(message = "Informe o cep")
 	@Size(max = 5)
 	@Column(length = 5)
@@ -63,14 +56,6 @@ public class Endereco {
 
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
-	}
-
-	public Estado getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Estado estado) {
-		this.estado = estado;
 	}
 
 	public String getCep() {

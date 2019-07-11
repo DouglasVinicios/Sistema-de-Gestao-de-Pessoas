@@ -11,9 +11,9 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
@@ -25,7 +25,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Funcionario {
 	@Id
 	@NotNull(message = "Informe a Matrícula.")
-	@Size(max = 8)
+	@Min(value = 8, message = "Matrícula deve ter 8 digitos")
+	@Max(value = 8, message = "Matrícula deve ter 8 digitos")
 	@Column(length = 8, nullable = false)
 	private Integer matricula;
 	@NotBlank(message = "Informe o Nome.")
@@ -38,12 +39,13 @@ public class Funcionario {
 	private String cpf;
 	@NotNull(message = "Data de Nascimento informada inválida.")
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Past(message = "Data de nascimento informada inválida.")
 	private Date dataNascimento;
-	@NotEmpty(message = "Entidade Cargo sem dados para seleção.")
+	@NotNull(message = "Entidade Cargo sem dados para seleção.")
 	@ManyToOne
 	private Cargo cargo;
-	@NotEmpty(message = "Entidade Empresa sem dados para seleção.")
+	@NotNull(message = "Entidade Empresa sem dados para seleção.")
 	@ManyToOne
 	private Empresa empresa;
 	@NotNull(message = "Informe o salário.")

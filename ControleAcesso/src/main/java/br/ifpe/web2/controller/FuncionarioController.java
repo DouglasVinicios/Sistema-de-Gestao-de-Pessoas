@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.ifpe.web2.model.Estado;
 import br.ifpe.web2.model.Funcionario;
 import br.ifpe.web2.service.CargoService;
 import br.ifpe.web2.service.EmpresaService;
@@ -42,7 +41,7 @@ public class FuncionarioController {
 		mv.addObject("funcionario", new Funcionario());
 		mv.addObject("listaCargos", this.cargoService.listarCargos());
 		mv.addObject("listaEmpresas", this.empresaService.listarEmpresas());
-		mv.addObject("listaEstados", Estado.values());
+		mv.addObject("action", "inserir");
 		return mv;
 	}
 
