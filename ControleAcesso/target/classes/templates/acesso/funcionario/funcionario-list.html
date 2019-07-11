@@ -1,12 +1,58 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="header :: headerBlock"></div>
 <head>
 <meta charset="UTF-8">
-<title>Manter Funcionarios</title>
+<title>Manter Funcionário</title>
 </head>
 <body>
-
-<script th:src="@{/js/jquery-form.js}" type="text/javascript"></script>
+<div th:insert="header :: navBar"></div>
+<div class="container">
+		<form class="form-inline" th:action="@{/funcionario/filtrar}" method="get">
+			<a th:href="@{/funcionario/inserir}" type="button"
+				class="btn btn-warning">Inserir Funcionário</a>
+			<div class="form-group mx-sm-3 mb-2">
+				<label for="inputPassword2" class="sr-only">Filtrar Funcionário</label>
+				<input type="text" name="nomeCargo" class="form-control"
+					id="filtraEmpresa" placeholder="Digite nome da cargo">
+			</div>
+			<button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+		</form>
+		<button id="btn-delete" class="btn btn-danger">Deletar</button>
+		<table class="table">
+			<thead class="thead-dark">
+				<tr>
+					<th class="bg-success" scope="col">Remover</th>
+					<th class="bg-success" scope="col">Nome</th>
+					<th class="bg-success" scope="col">Data de Nascimento</th>
+					<th class="bg-success" scope="col">Cargo</th>
+					<th class="bg-success" scope="col">Empresa</th>
+					<th class="bg-success" scope="col">Salário</th>
+					<th class="bg-success" scope="col">Data de Admissão</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${error}">
+					<td th:text="${error}"></td>
+				</tr>
+				<tr th:each="funcionario : ${listaFuncionarios}">
+					<td>
+						<form role="form" class="form-inline" id="cargo">
+								<input type="checkbox" class="form-control" name="check-remove[]"
+									th:value="${funcionario.matricula}">
+						</form>
+					</td>
+					<td th:text="${funcionario.nome}"></td>
+					<td th:text="${funcionario.dataNascimento}"></td>
+					<td th:text="${funcionario.cargo.nome}"></td>
+					<td th:text="${funcionario.empresa.nome}"></td>
+					<td th:text="${funcionario.salario}"></td>
+					<td th:text="${funcionario.dataAdmissao}"></td>
+				</tr>
+			</tbody>
+		</table>
+</div>
+		<script th:src="@{/js/jquery-form.js}" type="text/javascript"></script>
 </body>
 </html>
