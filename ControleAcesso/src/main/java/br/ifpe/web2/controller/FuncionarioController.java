@@ -36,14 +36,14 @@ public class FuncionarioController {
 	private CargoService cargoService;
 	@Autowired
 	private EmpresaService empresaService;
-	
+
 	@GetMapping
 	public ModelAndView listarFuncionarios() {
 		ModelAndView mv = new ModelAndView("/acesso/funcionario/funcionario-list");
 		mv.addObject("listaFuncionarios", this.funcionarioService.listarFuncionarios());
 		return mv;
 	}
-	
+
 	@GetMapping("/inserir")
 	public ModelAndView inserirFuncionario() {
 		ModelAndView mv = new ModelAndView("/acesso/funcionario/funcionario-form");
@@ -56,15 +56,17 @@ public class FuncionarioController {
 
 	@PostMapping("/inserir")
 	public ModelAndView inserirFuncionario(@Valid Funcionario funcionario, BindingResult br, RedirectAttributes ra,
-			@RequestParam(name = "foto") MultipartFile foto) {
-		
+			@RequestParam(required = false) MultipartFile file) {
+
 		if (br.hasErrors()) {
 			ModelAndView mv = new ModelAndView("/acesso/funcionario/funcionario-form");
 			mv.addObject("action", "inserir");
 			return mv;
 		}
 		try {
-			funcionario.setFoto(foto.getBytes());
+			if (file != null && file.getOriginalFilename().endsWith("\\.(png | jpg)")) {
+				funcionario.setFoto(file.getBytes());
+			}
 			this.funcionarioService.inserirFuncionario(funcionario);
 			ra.addFlashAttribute("sucesso", "Funcionário cadastrado");
 		} catch (Exception e) {
@@ -72,7 +74,7 @@ public class FuncionarioController {
 		}
 		return new ModelAndView("redirect:/funcionario/inserir");
 	}
-	
+
 	@GetMapping("/filtrar")
 	public ModelAndView filtrarFuncionario(@RequestParam(required = false) String nomeFuncionario) {
 		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-list");
@@ -115,14 +117,15 @@ public class FuncionarioController {
 			return mv;
 		}
 	}
-	
+
 	/* fazer mudanças para melhorar esses métodos dps */
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deletarFuncionario(@RequestBody int[] ids) {
 		for (Integer id : ids) {
-			String matricula = id+"";
-			Optional<Funcionario> funcionarioParaDeletar = Optional.ofNullable(this.funcionarioService.findByMatricula(matricula));
+			String matricula = id + "";
+			Optional<Funcionario> funcionarioParaDeletar = Optional
+					.ofNullable(this.funcionarioService.findByMatricula(matricula));
 			if (funcionarioParaDeletar.isPresent()) {
 				this.funcionarioService.deletarFuncionario(funcionarioParaDeletar.get());
 			}
