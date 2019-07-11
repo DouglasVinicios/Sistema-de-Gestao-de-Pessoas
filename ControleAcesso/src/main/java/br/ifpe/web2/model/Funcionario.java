@@ -31,7 +31,7 @@ public class Funcionario {
 	@Size(max = 70)
 	@Column(length = 70, nullable = false, unique = true)
 	private String nome;
-	@CPF(message = "Informe CPF.")
+	@CPF(message = "Informe CPF válido")
 	@Size(max = 11)
 	@Column(length = 11, nullable = false, columnDefinition = "char(11)")
 	private String cpf;

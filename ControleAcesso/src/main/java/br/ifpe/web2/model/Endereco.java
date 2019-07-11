@@ -17,7 +17,7 @@ public class Endereco {
 	@NotNull(message = "Informe o número")
 	@Size(max = 4)
 	@Column(length = 4)
-	private int numero;
+	private Integer numero;
 	@NotBlank(message = "Informe a cidade")
 	@Column(length = 40)
 	private String cidade;
@@ -42,11 +42,11 @@ public class Endereco {
 		this.complemento = complemento;
 	}
 
-	public int getNumero() {
+	public Integer getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(Integer numero) {
 		this.numero = numero;
 	}
 
