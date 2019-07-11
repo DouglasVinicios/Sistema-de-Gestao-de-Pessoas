@@ -60,6 +60,8 @@ public class FuncionarioController {
 
 		if (br.hasErrors()) {
 			ModelAndView mv = new ModelAndView("/acesso/funcionario/funcionario-form");
+			mv.addObject("listaCargos", this.cargoService.listarCargos());
+			mv.addObject("listaEmpresas", this.empresaService.listarEmpresas());
 			mv.addObject("action", "inserir");
 			return mv;
 		}
