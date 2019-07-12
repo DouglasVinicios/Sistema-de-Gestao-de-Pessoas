@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="header :: headerBlock"></div>
+<meta charset="UTF-8">
+<title>Formulário</title>
+</head>
+<body>
+	<div th:insert="header :: navBar"></div>
+	<div class="container">
+		<form th:object="${funcionario}" th:action="|/funcionario/${action}|"
+			method="post" enctype="multipart/form-data">
+			<div th:if="${#fields.hasAnyErrors()}">
+				<div class="alert alert-danger text-italic"
+					th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
+			</div>
+			<div th:if="${sucesso}" th:text="${sucesso}" class="alert alert-success"></div>
+			<div class="alert alert-danger text-italic" th:if="${errors}"
+				th:text="${errors}"></div>
+			<div class="form-group">
+				<label for="exampleInputMatricula">Matrícula: </label> <input type="text"
+					th:field="*{matricula}" class="form-control" id="exampleInputMatricula"
+					aria-describedby="Matricula" placeholder="Entre com a Matrícula" maxlength="8">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputNome">Nome: </label> <input type="text"
+					th:field="*{nome}" class="form-control" id="exampleInputNome"
+					aria-describedby="Nome" placeholder="Entre com o Nome">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputCPF">CPF: </label> <input
+					type="text" th:field="*{cpf}" class="form-control"
+					id="exampleInputCPF" aria-describedby="CPF"
+					placeholder="Entre com o CPF" maxlength="11">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputDataNascimento">Data de Nascimento: </label> <input type="date"
+					th:field="*{dataNascimento}" class="form-control" id="exampleInputDataNascimento"
+					aria-describedby="Data de Nascimento">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputCargo">Cargos: </label>
+				<select th:field="*{cargo}">
+					<option value="">Selecione um Cargo</option>
+					<option th:each="cargo : ${listaCargos}" th:text="${cargo.nome}" th:value="${cargo.id}"></option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="exampleInputEmpresa">Empresas: </label>
+				<select th:field="*{empresa}">
+					<option value="">Selecione uma Empresa</option>
+					<option th:each="empresa : ${listaEmpresas}" th:text="${empresa.nome}" th:value="${empresa.id}"></option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="exampleInputSalario">Salário: </label> <input type="number"
+					th:field="*{salario}" class="form-control" id="exampleInputSalario"
+					aria-describedby="Salário" min="0">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputDataAdmissao">Data de Admissão: </label> <input type="date"
+					th:field="*{dataAdmissao}" class="form-control" id="exampleInputDataAdmissao"
+					aria-describedby="Data de Admissão">
+			</div>
+			<div class="form-group" th:if="${action} == 'alteracao'">
+				<label for="exampleInputDataDemissão">Data de Demissão: </label> <input type="date"
+					th:field="*{dataDemissao}" class="form-control" id="exampleInputDataDemissao"
+					aria-describedby="Data de Demissão">
+			</div>
+			<div class="form-group" th:if="${action} == 'alteracao'">
+				<label for="exampleInputPeriodoFerias">Período de Férias: </label> <input type="date"
+					th:field="*{periodoFerias}" class="form-control" id="exampleInputPeriodoFerias"
+					aria-describedby="Período de Férias">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputLogradouro">Logradouro: </label> <input type="text"
+					th:field="*{endereco.logradouro}" class="form-control" id="exampleInputLogradouro"
+					aria-describedby="Logradouro">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputComplemento">Complemento: </label> <input type="text"
+					th:field="*{endereco.complemento}" class="form-control" id="exampleInputComplemento"
+					aria-describedby="Complemento">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputNumero">Número: </label> <input type="number"
+					th:field="*{endereco.numero}" class="form-control" id="exampleInputNumero"
+					aria-describedby="Número">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputCidade">Cidade: </label> <input type="text"
+					th:field="*{endereco.Cidade}" class="form-control" id="exampleInputCidade"
+					aria-describedby="Cidade">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputCEP">CEP: </label> <input type="text"
+					th:field="*{endereco.cep}" class="form-control" id="exampleInputCEP"
+					aria-describedby="CEP">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputFoto">Foto: </label> <input type="file"
+					name="file" id="exampleInputFile">
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+	<br><br><br><br><br>
+</body>
+</html>
