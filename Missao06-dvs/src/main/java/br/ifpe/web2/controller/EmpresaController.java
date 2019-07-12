@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -105,7 +106,7 @@ public class EmpresaController {
 			return mv;
 		}
 	}
-	
+
 	/* fazer mudanças para melhorar esses métodos dps */
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)

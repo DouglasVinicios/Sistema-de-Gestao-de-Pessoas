@@ -79,7 +79,7 @@ public class FuncionarioController {
 
 	@GetMapping("/filtrar")
 	public ModelAndView filtrarFuncionario(@RequestParam(required = false) String nomeFuncionario) {
-		ModelAndView mv = new ModelAndView("/acesso/empresa/empresa-list");
+		ModelAndView mv = new ModelAndView("/acesso/funcionario/funcionario-list");
 		try {
 			List<Funcionario> listaFuncionarios = this.funcionarioService.filtrarFuncionarioPeloNome(nomeFuncionario);
 			mv.addObject("listaEmpresas", listaFuncionarios);
@@ -93,7 +93,7 @@ public class FuncionarioController {
 		return mv;
 	}
 
-	@GetMapping("/atualizar/{id}")
+	@GetMapping("/atualizar/{matricula}")
 	public ModelAndView atualizarFuncionario(@PathVariable String matricula) {
 		ModelAndView mv = new ModelAndView("/acesso/funcionario/funcionario-form");
 		mv.addObject("funcionario", this.funcionarioService.findByMatricula(matricula));
@@ -101,7 +101,7 @@ public class FuncionarioController {
 		return mv;
 	}
 
-	@PostMapping("/atualizar/{id}")
+	@PostMapping("/atualizar/{matricula}")
 	public ModelAndView atualizarFuncionario(@Valid Funcionario funcionario, BindingResult br) {
 		if (br.hasErrors()) {
 			ModelAndView mv = new ModelAndView("/acesso/funcionario/funcionario-form");

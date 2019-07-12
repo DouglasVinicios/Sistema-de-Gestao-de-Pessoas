@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.ifpe.web2</groupId>
-	<artifactId>ControleAcesso</artifactId>
+	<artifactId>Missao06-dvs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ControleAcesso</name>
+	<name>Missao06-dvs</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
